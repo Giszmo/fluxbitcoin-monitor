@@ -136,7 +136,7 @@ class SampleControlSmartWirelessHeadsetPro extends ControlExtension {
 
     @Override
     public void onDestroy() {
-        Log.d(SampleExtensionService.LOG_TAG, "SampleControlSmartWirelessHeadsetPro onDestroy");
+        Log.d(Constants.TAG, "SampleControlSmartWirelessHeadsetPro onDestroy");
         stopAnimation();
         mHandler = null;
     };
@@ -155,13 +155,13 @@ class SampleControlSmartWirelessHeadsetPro extends ControlExtension {
     public void onResume() {
         mIsVisible = true;
 
-        Log.d(SampleExtensionService.LOG_TAG, "Starting animation");
+        Log.d(Constants.TAG, "Starting animation");
         startAnimation();
     }
 
     @Override
     public void onPause() {
-        Log.d(SampleExtensionService.LOG_TAG, "Stopping animation");
+        Log.d(Constants.TAG, "Stopping animation");
         mIsVisible = false;
 
         if (mIsShowingAnimation) {

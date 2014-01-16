@@ -83,7 +83,7 @@ public class SamplePreferenceActivity extends PreferenceActivity {
                 dialog = createReadMeDialog();
                 break;
             default:
-                Log.w(SampleExtensionService.LOG_TAG, "Not a valid dialog id: " + id);
+                Log.w(Constants.TAG, "Not a valid dialog id: " + id);
                 break;
         }
 

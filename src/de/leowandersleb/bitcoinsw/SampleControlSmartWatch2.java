@@ -32,388 +32,171 @@ Copyright (c) 2011-2013, Sony Mobile Communications AB
 
 package de.leowandersleb.bitcoinsw;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
+import android.util.JsonReader;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 
 import com.sonyericsson.extras.liveware.aef.control.Control;
-import com.sonyericsson.extras.liveware.extension.util.ExtensionUtils;
 import com.sonyericsson.extras.liveware.extension.util.control.ControlExtension;
 import com.sonyericsson.extras.liveware.extension.util.control.ControlObjectClickEvent;
 import com.sonyericsson.extras.liveware.extension.util.control.ControlTouchEvent;
-import com.sonyericsson.extras.liveware.extension.util.control.ControlView;
-import com.sonyericsson.extras.liveware.extension.util.control.ControlView.OnClickListener;
-import com.sonyericsson.extras.liveware.extension.util.control.ControlViewGroup;
 import com.sonymobile.smartconnect.extension.controlsample.R;
 
 /**
- * The sample control for SmartWatch handles the control on the accessory. This
- * class exists in one instance for every supported host application that we
- * have registered to
+ * The sample control for SmartWatch handles the control on the accessory. This class exists in one instance for every supported host application that we have
+ * registered to
  */
-class SampleControlSmartWatch2 extends ControlExtension {
+class SampleControlSmartWatch2 extends ControlExtension implements StringResultReceiver {
+	private Context context;
 
-    private static final int ANIMATION_DELTA_MS = 500;
-    private static final int SELECT_TOGGLER_MS = 2000;
-    private static final int MENU_ITEM_0 = 0;
-    private static final int MENU_ITEM_1 = 1;
-    private static final int MENU_ITEM_2 = 2;
-    private static final int MENU_ITEM_3 = 3;
-    private static final int MENU_ITEM_4 = 4;
-    private static final int MENU_ITEM_5 = 5;
+	/**
+	 * Create sample control.
+	 * 
+	 * @param hostAppPackageName
+	 *            Package name of host application.
+	 * @param context
+	 *            The context.
+	 * @param handler
+	 *            The handler to use
+	 */
+	SampleControlSmartWatch2(final String hostAppPackageName, final Context context) {
+		super(context, hostAppPackageName);
+		this.context = context;
+	}
 
-    private Handler mHandler;
+	/**
+	 * Get supported control width.
+	 * 
+	 * @param context
+	 *            The context.
+	 * @return the width.
+	 */
+	public static int getSupportedControlWidth(Context context) {
+		return context.getResources().getDimensionPixelSize(R.dimen.smart_watch_2_control_width);
+	}
 
-    private boolean mIsShowingAnimation = false;
+	/**
+	 * Get supported control height.
+	 * 
+	 * @param context
+	 *            The context.
+	 * @return the height.
+	 */
+	public static int getSupportedControlHeight(Context context) {
+		return context.getResources().getDimensionPixelSize(R.dimen.smart_watch_2_control_height);
+	}
 
-    private Animation mAnimation = null;
+	@Override
+	public void onDestroy() {
+		Log.d(Constants.TAG, "SampleControlSmartWatch onDestroy");
+	};
 
-    private ControlViewGroup mLayout = null;
+	@Override
+	public void onStart() {
+	}
 
-    private boolean mTextMenu = false;
-    Bundle[] mMenuItemsText = new Bundle[3];
-    Bundle[] mMenuItemsIcons = new Bundle[3];
+	@Override
+	public void onStop() {
+		// Nothing to do. Animation is handled in onPause.
+	}
 
-    /**
-     * Create sample control.
-     *
-     * @param hostAppPackageName Package name of host application.
-     * @param context The context.
-     * @param handler The handler to use
-     */
-    SampleControlSmartWatch2(final String hostAppPackageName, final Context context,
-            Handler handler) {
-        super(context, hostAppPackageName);
-        if (handler == null) {
-            throw new IllegalArgumentException("handler == null");
-        }
-        mHandler = handler;
-        setupClickables(context);
-        initializeMenus();
-    }
+	@Override
+	public void onResume() {
+		Log.d(Constants.TAG, "Starting");
+		showLayout(R.layout.sample_control_2, new Bundle[] {});
+		new GetMtGoxRateTask(context, this).execute();
+	}
 
-    private void initializeMenus() {
-        mMenuItemsText[0] = new Bundle();
-        mMenuItemsText[0].putInt(Control.Intents.EXTRA_MENU_ITEM_ID, MENU_ITEM_0);
-        mMenuItemsText[0].putString(Control.Intents.EXTRA_MENU_ITEM_TEXT, "Item 1");
-        mMenuItemsText[1] = new Bundle();
-        mMenuItemsText[1].putInt(Control.Intents.EXTRA_MENU_ITEM_ID, MENU_ITEM_1);
-        mMenuItemsText[1].putString(Control.Intents.EXTRA_MENU_ITEM_TEXT, "Item 2");
-        mMenuItemsText[2] = new Bundle();
-        mMenuItemsText[2].putInt(Control.Intents.EXTRA_MENU_ITEM_ID, MENU_ITEM_2);
-        mMenuItemsText[2].putString(Control.Intents.EXTRA_MENU_ITEM_TEXT, "Item 3");
+	@Override
+	public void onPause() {
+		Log.d(Constants.TAG, "Stopping animation");
+	}
 
-        mMenuItemsIcons[0] = new Bundle();
-        mMenuItemsIcons[0].putInt(Control.Intents.EXTRA_MENU_ITEM_ID, MENU_ITEM_3);
-        mMenuItemsIcons[0].putString(Control.Intents.EXTRA_MENU_ITEM_ICON,
-                ExtensionUtils.getUriString(mContext, R.drawable.actions_call));
-        mMenuItemsIcons[1] = new Bundle();
-        mMenuItemsIcons[1].putInt(Control.Intents.EXTRA_MENU_ITEM_ID, MENU_ITEM_4);
-        mMenuItemsIcons[1].putString(Control.Intents.EXTRA_MENU_ITEM_ICON,
-                ExtensionUtils.getUriString(mContext, R.drawable.actions_reply));
-        mMenuItemsIcons[2] = new Bundle();
-        mMenuItemsIcons[2].putInt(Control.Intents.EXTRA_MENU_ITEM_ID, MENU_ITEM_5);
-        mMenuItemsIcons[2].putString(Control.Intents.EXTRA_MENU_ITEM_ICON,
-                ExtensionUtils.getUriString(mContext, R.drawable.actions_view_in_phone));
-    }
+	@Override
+	public void onTouch(final ControlTouchEvent event) {
+		Log.d(Constants.TAG, "onTouch() " + event.getAction());
+		if (event.getAction() == Control.Intents.TOUCH_ACTION_RELEASE) {
+			Log.d(Constants.TAG, "Toggling animation");
+		}
+	}
 
-    /**
-     * Get supported control width.
-     *
-     * @param context The context.
-     * @return the width.
-     */
-    public static int getSupportedControlWidth(Context context) {
-        return context.getResources().getDimensionPixelSize(R.dimen.smart_watch_2_control_width);
-    }
+	@Override
+	public void onObjectClick(final ControlObjectClickEvent event) {
+		Log.d(Constants.TAG, "onObjectClick() " + event.getClickType());
+		// if (event.getLayoutReference() != -1) {
+		// mLayout.onClick(event.getLayoutReference());
+		// }
+	}
 
-    /**
-     * Get supported control height.
-     *
-     * @param context The context.
-     * @return the height.
-     */
-    public static int getSupportedControlHeight(Context context) {
-        return context.getResources().getDimensionPixelSize(R.dimen.smart_watch_2_control_height);
-    }
+	private class GetMtGoxRateTask extends AsyncTask<Void, Void, Float> {
+		private Context context;
+		private StringResultReceiver receiver;
 
-    @Override
-    public void onDestroy() {
-        Log.d(SampleExtensionService.LOG_TAG, "SampleControlSmartWatch onDestroy");
-        stopAnimation();
-        mHandler = null;
-    };
+		public GetMtGoxRateTask(Context context, StringResultReceiver receiver) {
+			this.context = context;
+			this.receiver = receiver;
+		}
 
-    @Override
-    public void onStart() {
-        // Nothing to do. Animation is handled in onResume.
-    }
+		@Override
+		protected Float doInBackground(Void... bla) {
+			String url = "http://data.mtgox.com/api/2/BTCUSD/money/ticker_fast";
+			Float retVal = -2f;
+			JsonReader reader = null;
+			try {
+				HttpClient hc = new DefaultHttpClient();
+				HttpGet get = new HttpGet(url);
+				HttpResponse response = hc.execute(get);
+				int statusCode = response.getStatusLine().getStatusCode();
+				if (statusCode == HttpStatus.SC_OK) {
+					InputStream inputStream = response.getEntity().getContent();
+					reader = new JsonReader(new InputStreamReader(inputStream, "UTF-8"));
+					Log.d(Constants.TAG, "SampleControlSmartWatch2.java::doInBackground " + reader.toString());
+					reader.beginObject();
+					while (reader.hasNext()) {
+						String name = reader.nextName();
+						if ("result".equals(name)) {
+							String result = reader.nextString();
+							if (!"success".equals(result)) {
+								return -1f;
+							}
+						} else if ("data".equals(name) || "last".equals(name)) {
+							reader.beginObject();
+						} else if ("value".equals(name)) {
+							retVal = (float) reader.nextDouble();
+							break;
+						} else {
+							reader.skipValue();
+						}
+					}
+					reader.close();
+					inputStream.close();
+				}
+			} catch (IOException e) {
+				Log.e(Constants.TAG, "SampleControlSmartWatch2.java::doInBackground ");
+			}
+			return retVal;
+		}
 
-    @Override
-    public void onStop() {
-        // Nothing to do. Animation is handled in onPause.
-    }
+		@Override
+		protected void onPostExecute(Float result) {
+			receiver.setResult(context.getString(R.string.mtgox_price, result));
+		}
+	}
 
-    @Override
-    public void onResume() {
-        Log.d(SampleExtensionService.LOG_TAG, "Starting animation");
-
-        Bundle b1 = new Bundle();
-        b1.putInt(Control.Intents.EXTRA_LAYOUT_REFERENCE, R.id.sample_control_text_1);
-        b1.putString(Control.Intents.EXTRA_TEXT, "1");
-
-        Bundle b2 = new Bundle();
-        b2.putInt(Control.Intents.EXTRA_LAYOUT_REFERENCE, R.id.sample_control_text_2);
-        b2.putString(Control.Intents.EXTRA_TEXT, "2");
-
-        Bundle b3 = new Bundle();
-        b3.putInt(Control.Intents.EXTRA_LAYOUT_REFERENCE, R.id.sample_control_text_3);
-        b3.putString(Control.Intents.EXTRA_TEXT, "3");
-
-        Bundle b4 = new Bundle();
-        b4.putInt(Control.Intents.EXTRA_LAYOUT_REFERENCE, R.id.sample_control_text_4);
-        b4.putString(Control.Intents.EXTRA_TEXT, "4");
-
-        Bundle[] data = new Bundle[4];
-
-        data[0] = b1;
-        data[1] = b2;
-        data[2] = b3;
-        data[3] = b4;
-
-        showLayout(R.layout.sample_control_2, data);
-
-        startAnimation();
-    }
-
-    @Override
-    public void onPause() {
-        Log.d(SampleExtensionService.LOG_TAG, "Stopping animation");
-        stopAnimation();
-    }
-
-    private void toggleAnimation() {
-        if (mIsShowingAnimation) {
-            stopAnimation();
-        }
-        else {
-            startAnimation();
-        }
-    }
-
-    /**
-     * Start showing animation on control.
-     */
-    private void startAnimation() {
-        if (!mIsShowingAnimation) {
-            mIsShowingAnimation = true;
-            mAnimation = new Animation();
-            mAnimation.run();
-        }
-    }
-
-    /**
-     * Stop showing animation on control.
-     */
-    private void stopAnimation() {
-        if (mIsShowingAnimation) {
-            // Stop animation on accessory
-            if (mAnimation != null) {
-                mAnimation.stop();
-                mHandler.removeCallbacks(mAnimation);
-                mAnimation = null;
-            }
-            mIsShowingAnimation = false;
-        }
-    }
-
-    @Override
-    public void onTouch(final ControlTouchEvent event) {
-        Log.d(SampleExtensionService.LOG_TAG, "onTouch() " + event.getAction());
-        if (event.getAction() == Control.Intents.TOUCH_ACTION_RELEASE) {
-            Log.d(SampleExtensionService.LOG_TAG, "Toggling animation");
-            toggleAnimation();
-        }
-    }
-
-    @Override
-    public void onObjectClick(final ControlObjectClickEvent event) {
-        Log.d(SampleExtensionService.LOG_TAG, "onObjectClick() " + event.getClickType());
-        if (event.getLayoutReference() != -1) {
-            mLayout.onClick(event.getLayoutReference());
-        }
-    }
-
-    @Override
-    public void onKey(final int action, final int keyCode, final long timeStamp) {
-        Log.d(SampleExtensionService.LOG_TAG, "onKey()");
-        if (action == Control.Intents.KEY_ACTION_RELEASE
-                && keyCode == Control.KeyCodes.KEYCODE_OPTIONS) {
-            toggleMenu();
-        }
-        else if (action == Control.Intents.KEY_ACTION_RELEASE
-                && keyCode == Control.KeyCodes.KEYCODE_BACK) {
-            Log.d(SampleExtensionService.LOG_TAG, "onKey() - back button intercepted.");
-        }
-    }
-
-    @Override
-    public void onMenuItemSelected(final int menuItem) {
-        Log.d(SampleExtensionService.LOG_TAG, "onMenuItemSelected() - menu item " + menuItem);
-        if (menuItem == MENU_ITEM_0) {
-            clearDisplay();
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    onResume();
-                }
-            }, 1000);
-        }
-    }
-
-    private void toggleMenu() {
-        if (mTextMenu) {
-            showMenu(mMenuItemsIcons);
-        }
-        else
-        {
-            showMenu(mMenuItemsText);
-        }
-        mTextMenu = !mTextMenu;
-    }
-
-    private void setupClickables(Context context) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService
-                (Context.LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.sample_control_2
-                , null);
-        mLayout = (ControlViewGroup) parseLayout(layout);
-        if (mLayout != null) {
-            ControlView upperLeft = mLayout.findViewById(R.id.sample_control_object_1);
-            upperLeft.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick() {
-                    sendImage(R.id.sample_control_object_1, R.drawable.left_top_selected);
-                    mHandler.postDelayed(new SelectToggler(R.id.sample_control_object_1,
-                            R.drawable.left_top), SELECT_TOGGLER_MS);
-                }
-            });
-            ControlView upperRight = mLayout.findViewById(R.id.sample_control_object_2);
-            upperRight.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick() {
-                    sendImage(R.id.sample_control_object_2, R.drawable.right_top_selected);
-                    mHandler.postDelayed(new SelectToggler(R.id.sample_control_object_2,
-                            R.drawable.right_top), SELECT_TOGGLER_MS);
-                }
-            });
-            ControlView bottomLeft = mLayout.findViewById(R.id.sample_control_object_3);
-            bottomLeft.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick() {
-                    sendImage(R.id.sample_control_object_3, R.drawable.left_bottom_selected);
-                    mHandler.postDelayed(new SelectToggler(R.id.sample_control_object_3,
-                            R.drawable.left_bottom), SELECT_TOGGLER_MS);
-                }
-            });
-            ControlView bottomRight = mLayout.findViewById(R.id.sample_control_object_4);
-            bottomRight.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick() {
-                    sendImage(R.id.sample_control_object_4, R.drawable.right_bottom_selected);
-                    mHandler.postDelayed(new SelectToggler(R.id.sample_control_object_4,
-                            R.drawable.right_bottom), SELECT_TOGGLER_MS);
-                }
-            });
-        }
-    }
-
-    private class SelectToggler implements Runnable {
-
-        private int mLayoutReference;
-        private int mResourceId;
-
-        SelectToggler(int layoutReference, int resourceId) {
-            mLayoutReference = layoutReference;
-            mResourceId = resourceId;
-        }
-
-        @Override
-        public void run() {
-            sendImage(mLayoutReference, mResourceId);
-        }
-
-    }
-
-    /**
-     * The animation class shows an animation on the accessory. The animation
-     * runs until mHandler.removeCallbacks has been called.
-     */
-    private class Animation implements Runnable {
-
-        private int mIndex = 1;
-        private boolean mIsStopped = false;
-
-        /**
-         * Create animation.
-         */
-        Animation() {
-            mIndex = 1;
-        }
-
-        /**
-         * Stop the animation.
-         */
-        public void stop() {
-            mIsStopped = true;
-        }
-
-        @Override
-        public void run() {
-            int resourceId;
-            switch (mIndex) {
-                case 1:
-                    resourceId = R.drawable.generic_anim_1_icn;
-                    break;
-                case 2:
-                    resourceId = R.drawable.generic_anim_2_icn;
-                    break;
-                case 3:
-                    resourceId = R.drawable.generic_anim_3_icn;
-                    break;
-                case 4:
-                    resourceId = R.drawable.generic_anim_2_icn;
-                    break;
-                default:
-                    Log.e(SampleExtensionService.LOG_TAG, "mIndex out of bounds: " + mIndex);
-                    resourceId = R.drawable.generic_anim_1_icn;
-                    break;
-            }
-            mIndex++;
-            if (mIndex > 4) {
-                mIndex = 1;
-            }
-
-            if (!mIsStopped) {
-                updateAnimation(resourceId);
-            }
-            if (mHandler != null && !mIsStopped) {
-                mHandler.postDelayed(this, ANIMATION_DELTA_MS);
-            }
-        }
-
-        /**
-         * Update the animation on the accessory. Only updates the part of the
-         * screen which contains the animation.
-         *
-         * @param resourceId The new resource to show.
-         */
-        private void updateAnimation(int resourceId) {
-            sendImage(R.id.animatedImage, resourceId);
-        }
-    };
-
+	@Override
+	public void setResult(String result) {
+		sendText(R.id.mtgox_text, result);
+	}
 }

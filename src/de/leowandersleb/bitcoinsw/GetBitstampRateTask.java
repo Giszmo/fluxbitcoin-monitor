@@ -37,7 +37,6 @@ class GetBitstampRateTask extends AsyncTask<Void, Void, Float> {
 			if (statusCode == HttpStatus.SC_OK) {
 				InputStream inputStream = response.getEntity().getContent();
 				reader = new JsonReader(new InputStreamReader(inputStream, "UTF-8"));
-				Log.d(Constants.TAG, "SampleControlSmartWatch2.java::doInBackground " + reader.toString());
 				reader.beginObject();
 				while (reader.hasNext()) {
 					String name = reader.nextName();

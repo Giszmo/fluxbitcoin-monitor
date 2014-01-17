@@ -1,5 +1,8 @@
 package de.leowandersleb.bitcoinsw;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -11,7 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Main extends Activity {
+public class Main extends Activity implements StringResultReceiver {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,5 +32,16 @@ public class Main extends Activity {
 				Toast.makeText(Main.this, "Address copied ot clipboard", Toast.LENGTH_LONG).show();
 			}
 		});
+		ExecutorService threadPool = Executors.newFixedThreadPool(4);
+		new GetMtGoxRateTask(this, this).executeOnExecutor(threadPool);
+		new GetBitstampRateTask(this, this).executeOnExecutor(threadPool);
+		new GetBTCChinaRateTask(this, this).executeOnExecutor(threadPool);
+		new GetHuobiRateTask(this, this).executeOnExecutor(threadPool);
+	}
+
+	@Override
+	public void setResult(int resId, String result) {
+		TextView tickerText = (TextView) findViewById(R.id.tickertext);
+		tickerText.setText(tickerText.getText() + "\n\n" + result);
 	}
 }

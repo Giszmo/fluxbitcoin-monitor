@@ -42,7 +42,6 @@ import android.util.Log;
 import com.sonyericsson.extras.liveware.extension.util.control.ControlExtension;
 import com.sonyericsson.extras.liveware.extension.util.control.ControlObjectClickEvent;
 import com.sonyericsson.extras.liveware.extension.util.control.ControlTouchEvent;
-import com.sonymobile.smartconnect.extension.controlsample.R;
 
 /**
  * The sample control for SmartWatch handles the control on the accessory. This class exists in one instance for every supported host application that we have

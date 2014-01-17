@@ -3,8 +3,6 @@ package de.leowandersleb.bitcoinsw;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.sonymobile.smartconnect.extension.controlsample.R;
-
 class GetHuobiRateTask extends AsyncTask<Void, Void, Float> {
 	private Context context;
 	private StringResultReceiver receiver;

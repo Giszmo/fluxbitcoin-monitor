@@ -15,8 +15,6 @@ import android.os.AsyncTask;
 import android.util.JsonReader;
 import android.util.Log;
 
-import com.sonymobile.smartconnect.extension.controlsample.R;
-
 class GetBitstampRateTask extends AsyncTask<Void, Void, Float> {
 	private Context context;
 	private StringResultReceiver receiver;

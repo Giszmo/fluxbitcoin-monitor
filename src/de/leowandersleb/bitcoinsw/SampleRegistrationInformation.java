@@ -39,7 +39,6 @@ import android.util.Log;
 import com.sonyericsson.extras.liveware.aef.registration.Registration;
 import com.sonyericsson.extras.liveware.extension.util.ExtensionUtils;
 import com.sonyericsson.extras.liveware.extension.util.registration.RegistrationInformation;
-import com.sonymobile.smartconnect.extension.controlsample.R;
 
 /**
  * Provides information needed during extension registration

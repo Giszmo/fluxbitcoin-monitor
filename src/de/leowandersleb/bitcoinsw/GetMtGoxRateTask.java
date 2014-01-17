@@ -15,8 +15,6 @@ import android.os.AsyncTask;
 import android.util.JsonReader;
 import android.util.Log;
 
-import com.sonymobile.smartconnect.extension.controlsample.R;
-
 class GetMtGoxRateTask extends AsyncTask<Void, Void, Float> {
 	private Context context;
 	private StringResultReceiver receiver;
@@ -68,6 +66,7 @@ class GetMtGoxRateTask extends AsyncTask<Void, Void, Float> {
 
 	@Override
 	protected void onPostExecute(Float result) {
+
 		receiver.setResult(R.id.mtgox_text, context.getString(R.string.mtgox_price, result));
 	}
 }

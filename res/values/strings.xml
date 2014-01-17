@@ -2,7 +2,7 @@
 <!-- No translation of sample extensions -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- Name of app, shown when installing/uninstalling extension -->
-    <string name="app_name">FluxBitcoin SW2 extension</string>
+    <string name="app_name">FluxBitcoin for SW2</string>
     <!-- Title of preference activity -->
     <string name="preference_activity_title">FluxBitcoin settings</string>
     <!-- Name of extension, shown in preferences -->
@@ -23,4 +23,6 @@
     <string name="mtgox_price">MtGox\n%f\nUSD/BTC</string>
     <string name="huobi_price">火币网\nmissing\nCNY/BTC</string>
     <string name="btcchina_price">BTC China\n%f\nCNY/BTC</string>
+    <string name="description">FluxBitcoin Monitor for Sony Smartwatch 2 works only for the &lt;a href="http://www.sonymobile.com/global-en/products/accessories/smartwatch-2-sw2/"&gt;Sony Smartwatch 2&lt;/a&gt; and with the Sony Smartwatch app. The app was originally created by &lt;a href="mailto:leo-bm@wandersleb.de"&gt;Leo Wandersleb&lt;/a&gt;. It is &lt;a href="https://bitbucket.org/giszmo/fluxbitcoin-monitor"&gt;open source&lt;/a&gt;, so if you want to extend it for the pebble or add other exchanges/features, feel free to fork it and make pull requests. Any improvements such as transalations, better error checking, Smartwatch1/Pebble/Galaxy Gear support, more information etc. are highly welcome.\n\nIf you want to buy Leo a beer, feel free to send bitcoins here:</string>
+    <string name="bitcoindonationaddress">1AWzR4Y1hvedAvTBH6AfSbMnGuWxZhjm3S</string>
 </resources>

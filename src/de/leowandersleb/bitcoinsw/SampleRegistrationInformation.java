@@ -34,6 +34,7 @@ package de.leowandersleb.bitcoinsw;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.util.Log;
 
 import com.sonyericsson.extras.liveware.aef.registration.Registration;
 import com.sonyericsson.extras.liveware.extension.util.ExtensionUtils;
@@ -58,6 +59,7 @@ public class SampleRegistrationInformation extends RegistrationInformation {
 			throw new IllegalArgumentException("context == null");
 		}
 		mContext = context;
+		Log.d(Constants.TAG, "SampleRegistrationInformation.java::SampleRegistrationInformation ");
 	}
 
 	@Override
@@ -97,6 +99,7 @@ public class SampleRegistrationInformation extends RegistrationInformation {
 	 */
 	@Override
 	public ContentValues getExtensionRegistrationConfiguration() {
+		Log.d(Constants.TAG, "SampleRegistrationInformation.java::getExtensionRegistrationConfiguration ");
 		String iconHostapp = ExtensionUtils.getUriString(mContext, R.drawable.icon);
 		String iconExtension = ExtensionUtils.getUriString(mContext, R.drawable.icon_extension);
 		String iconExtension48 = ExtensionUtils.getUriString(mContext, R.drawable.icon_extension48);
@@ -120,6 +123,7 @@ public class SampleRegistrationInformation extends RegistrationInformation {
 
 	@Override
 	public boolean isDisplaySizeSupported(int width, int height) {
+		Log.d(Constants.TAG, "SampleRegistrationInformation.java::isDisplaySizeSupported ");
 		return ((width == SampleControlSmartWatch2.getSupportedControlWidth(mContext) && height == SampleControlSmartWatch2.getSupportedControlHeight(mContext) || width == SampleControlSmartWatch
 				.getSupportedControlWidth(mContext) && height == SampleControlSmartWatch.getSupportedControlHeight(mContext)) || (width == SampleControlSmartWirelessHeadsetPro
 				.getSupportedControlWidth(mContext) && height == SampleControlSmartWirelessHeadsetPro.getSupportedControlHeight(mContext)));

@@ -32,23 +32,13 @@ Copyright (c) 2011-2013, Sony Mobile Communications AB
 
 package de.leowandersleb.bitcoinsw;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.JsonReader;
 import android.util.Log;
 
-import com.sonyericsson.extras.liveware.aef.control.Control;
 import com.sonyericsson.extras.liveware.extension.util.control.ControlExtension;
 import com.sonyericsson.extras.liveware.extension.util.control.ControlObjectClickEvent;
 import com.sonyericsson.extras.liveware.extension.util.control.ControlTouchEvent;
@@ -105,6 +95,7 @@ class SampleControlSmartWatch2 extends ControlExtension implements StringResultR
 
 	@Override
 	public void onStart() {
+		Log.d(Constants.TAG, "SampleControlSmartWatch2.java::onStart ");
 	}
 
 	@Override
@@ -116,87 +107,28 @@ class SampleControlSmartWatch2 extends ControlExtension implements StringResultR
 	public void onResume() {
 		Log.d(Constants.TAG, "Starting");
 		showLayout(R.layout.sample_control_2, new Bundle[] {});
-		new GetMtGoxRateTask(context, this).execute();
+		ExecutorService threadPool = Executors.newFixedThreadPool(4);
+		new GetMtGoxRateTask(context, this).executeOnExecutor(threadPool);
+		new GetBitstampRateTask(context, this).executeOnExecutor(threadPool);
+		new GetBTCChinaRateTask(context, this).executeOnExecutor(threadPool);
+		new GetHuobiRateTask(context, this).executeOnExecutor(threadPool);
 	}
 
 	@Override
 	public void onPause() {
-		Log.d(Constants.TAG, "Stopping animation");
+		Log.d(Constants.TAG, "SampleControlSmartWatch2.java::onPause ");
 	}
 
 	@Override
 	public void onTouch(final ControlTouchEvent event) {
-		Log.d(Constants.TAG, "onTouch() " + event.getAction());
-		if (event.getAction() == Control.Intents.TOUCH_ACTION_RELEASE) {
-			Log.d(Constants.TAG, "Toggling animation");
-		}
 	}
 
 	@Override
 	public void onObjectClick(final ControlObjectClickEvent event) {
-		Log.d(Constants.TAG, "onObjectClick() " + event.getClickType());
-		// if (event.getLayoutReference() != -1) {
-		// mLayout.onClick(event.getLayoutReference());
-		// }
-	}
-
-	private class GetMtGoxRateTask extends AsyncTask<Void, Void, Float> {
-		private Context context;
-		private StringResultReceiver receiver;
-
-		public GetMtGoxRateTask(Context context, StringResultReceiver receiver) {
-			this.context = context;
-			this.receiver = receiver;
-		}
-
-		@Override
-		protected Float doInBackground(Void... bla) {
-			String url = "http://data.mtgox.com/api/2/BTCUSD/money/ticker_fast";
-			Float retVal = -2f;
-			JsonReader reader = null;
-			try {
-				HttpClient hc = new DefaultHttpClient();
-				HttpGet get = new HttpGet(url);
-				HttpResponse response = hc.execute(get);
-				int statusCode = response.getStatusLine().getStatusCode();
-				if (statusCode == HttpStatus.SC_OK) {
-					InputStream inputStream = response.getEntity().getContent();
-					reader = new JsonReader(new InputStreamReader(inputStream, "UTF-8"));
-					Log.d(Constants.TAG, "SampleControlSmartWatch2.java::doInBackground " + reader.toString());
-					reader.beginObject();
-					while (reader.hasNext()) {
-						String name = reader.nextName();
-						if ("result".equals(name)) {
-							String result = reader.nextString();
-							if (!"success".equals(result)) {
-								return -1f;
-							}
-						} else if ("data".equals(name) || "last".equals(name)) {
-							reader.beginObject();
-						} else if ("value".equals(name)) {
-							retVal = (float) reader.nextDouble();
-							break;
-						} else {
-							reader.skipValue();
-						}
-					}
-					reader.close();
-					inputStream.close();
-				}
-			} catch (IOException e) {
-				Log.e(Constants.TAG, "SampleControlSmartWatch2.java::doInBackground ");
-			}
-			return retVal;
-		}
-
-		@Override
-		protected void onPostExecute(Float result) {
-			receiver.setResult(context.getString(R.string.mtgox_price, result));
-		}
 	}
 
 	@Override
-	public void setResult(String result) {
-		sendText(R.id.mtgox_text, result);
+	public void setResult(int resId, String result) {
+		sendText(resId, result);
 	}
 }

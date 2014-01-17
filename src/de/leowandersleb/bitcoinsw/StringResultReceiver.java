@@ -1,5 +1,5 @@
 package de.leowandersleb.bitcoinsw;
 
 public interface StringResultReceiver {
-	void setResult(String result);
+	void setResult(int resId, String result);
 }

@@ -15,9 +15,12 @@
     <string name="preference_option_read_me_txt">FluxBitcoin shows latest exchange rates from various exchanges</string>
     <!-- Text drawn in control on Smart Wireless Headset pro-->
     <string name="sample_control_headset_pro_text">Press Prev or Next</string>
-    <string name="huobi">火币网</string>
-    <string name="mtgox">MtGox</string>
-    <string name="bitstamp">Bitstamp</string>
-    <string name="btc_china">BTC China</string>
-    <string name="mtgox_price">MtGox\n$%fUS/BTC</string>
+    <string name="bitstamp">Bitstamp …</string>
+    <string name="mtgox">MtGox …</string>
+    <string name="huobi">火币网 …</string>
+    <string name="btc_china">BTC China …</string>
+    <string name="bitstamp_price">Bitstamp\n%f\nUSD/BTC</string>
+    <string name="mtgox_price">MtGox\n%f\nUSD/BTC</string>
+    <string name="huobi_price">火币网\nmissing\nCNY/BTC</string>
+    <string name="btcchina_price">BTC China\n%f\nCNY/BTC</string>
 </resources>

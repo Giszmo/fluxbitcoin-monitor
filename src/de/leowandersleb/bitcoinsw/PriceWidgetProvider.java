@@ -1,8 +1,6 @@
 package de.leowandersleb.bitcoinsw;
 
 import java.security.InvalidParameterException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -30,19 +28,13 @@ public class PriceWidgetProvider extends AppWidgetProvider implements ResultRece
 
 		// TODO: Jan 29, 2014 Leo: clicking the widget should initialize a refresh
 		// Intent intent = new Intent();
-		// intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		// intent.setAction("android.intent.action.VIEW");
 		// intent.setComponent(ComponentName.unflattenFromString("de.leowandersleb.fluxcards/de.leowandersleb.fluxcards.FluxCardsActivity"));
 		// views.setOnClickPendingIntent(R.id.widget_frame, PendingIntent.getActivity(context, 0, intent, 0));
 
 		appWidgetManager.updateAppWidget(new ComponentName(context.getPackageName(), name), views);
 
-		// TODO: Jan 29, 2014 Leo: move these 5 lines somewhere. Repeated 3 times already :/
-		ExecutorService threadPool = Executors.newFixedThreadPool(4);
-		new GetMtGoxRateTask(this).executeOnExecutor(threadPool);
-		new GetBitstampRateTask(this).executeOnExecutor(threadPool);
-		new GetBTCChinaRateTask(this).executeOnExecutor(threadPool);
-		new GetHuobiRateTask(this).executeOnExecutor(threadPool);
+		Tools.getRatesAsync(this);
 	}
 
 	@Override

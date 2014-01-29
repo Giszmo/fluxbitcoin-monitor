@@ -10,15 +10,6 @@
         android:layout_centerInParent="true"
         android:src="@drawable/icon" />
     <TextView
-        android:text="@string/btc_china"
-        android:id="@+id/btcchina_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:textColor="@color/smart_watch_text_color_orange"
-        android:textSize="@dimen/smart_watch_text_size_big" />
-    <TextView
         android:text="@string/huobi"
         android:id="@+id/huobi_text"
         android:layout_width="wrap_content"
@@ -36,13 +27,25 @@
         android:layout_alignParentBottom="true"
         android:textColor="@color/smart_watch_text_color_orange"
         android:textSize="@dimen/smart_watch_text_size_big" />
+
     <TextView
-        android:text="@string/bitstamp"
+        android:id="@+id/btcchina_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/btc_china"
+        android:textColor="@color/smart_watch_text_color_orange"
+        android:textSize="@dimen/smart_watch_text_size_big" />
+
+    <TextView
         android:id="@+id/bitstamp_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/bitstamp"
         android:textColor="@color/smart_watch_text_color_orange"
         android:textSize="@dimen/smart_watch_text_size_big" />
+
 </RelativeLayout>

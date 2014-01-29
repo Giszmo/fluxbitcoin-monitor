@@ -24,11 +24,5 @@
             android:text="@string/bitcoindonationaddress"
             android:textSize="12sp" >
         </EditText>
-        <TextView
-            android:id="@+id/tickertext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/no_smartwatch_ticker" />
     </LinearLayout>
 </ScrollView>

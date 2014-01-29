@@ -10,17 +10,14 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.JsonReader;
 import android.util.Log;
 
 class GetHuobiRateTask extends AsyncTask<Void, Void, Float> {
-	private Context context;
-	private StringResultReceiver receiver;
+	private ResultReceiver receiver;
 
-	public GetHuobiRateTask(Context context, StringResultReceiver receiver) {
-		this.context = context;
+	public GetHuobiRateTask(ResultReceiver receiver) {
 		this.receiver = receiver;
 	}
 
@@ -60,6 +57,6 @@ class GetHuobiRateTask extends AsyncTask<Void, Void, Float> {
 
 	@Override
 	protected void onPostExecute(Float result) {
-		receiver.setResult(R.id.huobi_text, context.getString(R.string.huobi_price, result));
+		receiver.setResult(R.id.huobi_text, result);
 	}
 }

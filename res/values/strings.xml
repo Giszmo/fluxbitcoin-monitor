@@ -23,7 +23,13 @@
     <string name="mtgox_price">MtGox\n%.2f\nUSD/BTC</string>
     <string name="huobi_price">火币网\n%.1f\nCNY/BTC</string>
     <string name="btcchina_price">BTC China\n%.1f\nCNY/BTC</string>
-    <string name="description">FluxBitcoin Monitor for Sony Smartwatch 2 works only for the &lt;a href="http://www.sonymobile.com/global-en/products/accessories/smartwatch-2-sw2/"&gt;Sony Smartwatch 2&lt;/a&gt; and with the Sony Smartwatch app. The app was originally created by &lt;a href="mailto:leo-bm@wandersleb.de"&gt;Leo Wandersleb&lt;/a&gt;. It is &lt;a href="https://bitbucket.org/giszmo/fluxbitcoin-monitor"&gt;open source&lt;/a&gt;, so if you want to extend it for the pebble or add other exchanges/features, feel free to fork it and make pull requests. Any improvements such as transalations, better error checking, Smartwatch1/Pebble/Galaxy Gear support, more information etc. are highly welcome.\n\nIf you want to buy Leo a beer, feel free to send bitcoins here:</string>
+    <string name="dollar_price_short">$%.2f</string>
+    <string name="yuan_price_short">%.1f¥</string>
+    <string name="description">FluxBitcoin Monitor comes with a widget and works for the &lt;a href="http://www.sonymobile.com/global-en/products/accessories/smartwatch-2-sw2/"&gt;Sony Smartwatch 2&lt;/a&gt; together with the Sony Smartwatch app. The app was originally created by &lt;a href="mailto:leo-bm@wandersleb.de"&gt;Leo Wandersleb&lt;/a&gt;. It is &lt;a href="https://bitbucket.org/giszmo/fluxbitcoin-monitor"&gt;open source&lt;/a&gt;, so if you want to extend it for the pebble or add other exchanges/features, feel free to fork it and make pull requests. Any improvements such as transalations, better error checking, Smartwatch1/Pebble/Galaxy Gear support, more information etc. are highly welcome.\n\nIf you want to buy Leo a beer, feel free to send bitcoins here:</string>
     <string name="bitcoindonationaddress">1AWzR4Y1hvedAvTBH6AfSbMnGuWxZhjm3S</string>
-    <string name="no_smartwatch_ticker">In case you have no Sony Smartwatch 2 and still wonder what the exchange rate is:</string>
+    <string name="appwidget_loading_text">Loading data …</string>
+    <string name="_0">Lorem ipsum</string>
+    <string name="appwidget_replace_text">Replace me with a new Bitcoin Widget</string>
+    <string name="bitcoin">Bitcoin</string>
+    <string name="fluxbitcoin_widget">FluxBitcoin Widget</string>
 </resources>

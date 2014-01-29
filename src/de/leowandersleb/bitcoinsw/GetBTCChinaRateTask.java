@@ -10,17 +10,14 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.JsonReader;
 import android.util.Log;
 
 class GetBTCChinaRateTask extends AsyncTask<Void, Void, Float> {
-	private Context context;
-	private StringResultReceiver receiver;
+	private ResultReceiver receiver;
 
-	public GetBTCChinaRateTask(Context context, StringResultReceiver receiver) {
-		this.context = context;
+	public GetBTCChinaRateTask(ResultReceiver receiver) {
 		this.receiver = receiver;
 	}
 
@@ -61,6 +58,6 @@ class GetBTCChinaRateTask extends AsyncTask<Void, Void, Float> {
 
 	@Override
 	protected void onPostExecute(Float result) {
-		receiver.setResult(R.id.btcchina_text, context.getString(R.string.btcchina_price, result));
+		receiver.setResult(R.id.btcchina_text, result);
 	}
 }

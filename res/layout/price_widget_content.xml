@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/widget_frame"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/border"
+    android:focusable="true"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/widget_bitstamp"
+            style="@style/widgetTextStyle"
+            android:layout_gravity="left"
+            android:text="@string/bitstamp" />
+
+        <TextView
+            android:id="@+id/widget_mtgox"
+            style="@style/widgetTextStyle"
+            android:layout_gravity="left"
+            android:text="@string/mtgox" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:background="@drawable/bc_logo_60"
+        tools:ignore="ContentDescription" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/widget_huobi"
+            style="@style/widgetTextStyle"
+            android:layout_gravity="right"
+            android:text="@string/huobi" />
+
+        <TextView
+            android:id="@+id/widget_btcchina"
+            style="@style/widgetTextStyle"
+            android:layout_gravity="right"
+            android:text="@string/btc_china" />
+
+    </LinearLayout>
+
+</LinearLayout>

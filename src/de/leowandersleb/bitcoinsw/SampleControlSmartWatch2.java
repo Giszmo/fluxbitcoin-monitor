@@ -32,8 +32,7 @@ Copyright (c) 2011-2013, Sony Mobile Communications AB
 
 package de.leowandersleb.bitcoinsw;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.security.InvalidParameterException;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -47,7 +46,7 @@ import com.sonyericsson.extras.liveware.extension.util.control.ControlTouchEvent
  * The sample control for SmartWatch handles the control on the accessory. This class exists in one instance for every supported host application that we have
  * registered to
  */
-class SampleControlSmartWatch2 extends ControlExtension implements StringResultReceiver {
+class SampleControlSmartWatch2 extends ControlExtension implements ResultReceiver {
 	private Context context;
 
 	/**
@@ -106,11 +105,7 @@ class SampleControlSmartWatch2 extends ControlExtension implements StringResultR
 	public void onResume() {
 		Log.d(Constants.TAG, "Starting");
 		showLayout(R.layout.sample_control_2, new Bundle[] {});
-		ExecutorService threadPool = Executors.newFixedThreadPool(4);
-		new GetMtGoxRateTask(context, this).executeOnExecutor(threadPool);
-		new GetBitstampRateTask(context, this).executeOnExecutor(threadPool);
-		new GetBTCChinaRateTask(context, this).executeOnExecutor(threadPool);
-		new GetHuobiRateTask(context, this).executeOnExecutor(threadPool);
+		Tools.getRatesAsync(this);
 	}
 
 	@Override
@@ -127,7 +122,24 @@ class SampleControlSmartWatch2 extends ControlExtension implements StringResultR
 	}
 
 	@Override
-	public void setResult(int resId, String result) {
-		sendText(resId, result);
+	public void setResult(int resId, float result) {
+		String text = "";
+		switch (resId) {
+		case R.id.bitstamp_text:
+			text = context.getString(R.string.bitstamp_price, result);
+			break;
+		case R.id.mtgox_text:
+			text = context.getString(R.string.mtgox_price, result);
+			break;
+		case R.id.huobi_text:
+			text = context.getString(R.string.huobi_price, result);
+			break;
+		case R.id.btcchina_text:
+			text = context.getString(R.string.btcchina_price, result);
+			break;
+		default:
+			throw new InvalidParameterException(resId + " is not a valid resId");
+		}
+		sendText(resId, text);
 	}
 }

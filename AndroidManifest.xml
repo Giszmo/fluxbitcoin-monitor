@@ -34,6 +34,15 @@
 
         <service android:name="de.leowandersleb.bitcoinsw.SampleExtensionService" />
 
+		<receiver android:name="de.leowandersleb.bitcoinsw.PriceWidgetProvider"
+		    android:label="@string/fluxbitcoin_widget"
+		    android:exported="false">
+		    <intent-filter>
+		        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+		    </intent-filter>
+		    <meta-data android:name="android.appwidget.provider"
+		               android:resource="@xml/price_widget" />
+		</receiver>
         <receiver
             android:name="de.leowandersleb.bitcoinsw.ExtensionReceiver"
             android:permission="com.sonyericsson.extras.liveware.aef.HOSTAPP_PERMISSION" >

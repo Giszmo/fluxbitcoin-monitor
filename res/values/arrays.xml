@@ -1,0 +1,14 @@
+<resources>
+    <string-array name="exchangeList">
+        <item>Bitstamp</item>
+        <item>Mt Gox</item>
+        <item>火币网</item>
+        <item>BTC China</item>
+    </string-array>
+    <string-array name="exchangeValues">
+        <item>BITSTAMP</item>
+        <item>MTGOX</item>
+        <item>HUOBI</item>
+        <item>BTCCHINA</item>
+    </string-array>
+</resources>

@@ -10,17 +10,14 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.JsonReader;
 import android.util.Log;
 
 class GetBitstampRateTask extends AsyncTask<Void, Void, Float> {
-	private Context context;
-	private StringResultReceiver receiver;
+	private ResultReceiver receiver;
 
-	public GetBitstampRateTask(Context context, StringResultReceiver receiver) {
-		this.context = context;
+	public GetBitstampRateTask(ResultReceiver receiver) {
 		this.receiver = receiver;
 	}
 
@@ -58,6 +55,6 @@ class GetBitstampRateTask extends AsyncTask<Void, Void, Float> {
 
 	@Override
 	protected void onPostExecute(Float result) {
-		receiver.setResult(R.id.bitstamp_text, context.getString(R.string.bitstamp_price, result));
+		receiver.setResult(R.id.bitstamp_text, result);
 	}
 }

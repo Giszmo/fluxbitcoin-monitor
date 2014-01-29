@@ -5,15 +5,4 @@
     <Preference
         android:key="@string/preference_key_read_me"
         android:title="@string/preference_option_read_me" />
-    <ListPreference
-            android:title="Exchange service"
-            android:summary="The exchange the widget uses"
-            android:key="servicePref"
-            android:entries="@array/exchangeList"
-            android:entryValues="@array/exchangeValues"
-            android:defaultValue="MTGOX" />
-    <Preference
-            android:title="Add widget"
-            android:summary="Click here to add widget to home screen"
-            android:key="addWidget" />
 </PreferenceScreen>

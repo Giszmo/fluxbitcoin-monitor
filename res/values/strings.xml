@@ -16,11 +16,11 @@
     <!-- Text drawn in control on Smart Wireless Headset pro-->
     <string name="sample_control_headset_pro_text">Press Prev or Next</string>
     <string name="bitstamp">Bitstamp …</string>
-    <string name="mtgox">MtGox …</string>
+    <string name="kraken">Kraken …</string>
     <string name="huobi">火币网 …</string>
     <string name="btc_china">BTC China …</string>
     <string name="bitstamp_price">Bitstamp\n%.2f\nUSD/BTC</string>
-    <string name="mtgox_price">MtGox\n%.2f\nUSD/BTC</string>
+    <string name="kraken_price">Kraken\n%.2f\nEUR/BTC</string>
     <string name="huobi_price">火币网\n%.1f\nCNY/BTC</string>
     <string name="btcchina_price">BTC China\n%.1f\nCNY/BTC</string>
     <string name="dollar_price_short">$%.2f</string>

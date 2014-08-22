@@ -14,16 +14,19 @@ import android.os.AsyncTask;
 import android.util.JsonReader;
 import android.util.Log;
 
-class GetMtGoxRateTask extends AsyncTask<Void, Void, Float> {
+class GetKrakenRateTask extends AsyncTask<Void, Void, Float> {
 	private ResultReceiver receiver;
 
-	public GetMtGoxRateTask(ResultReceiver receiver) {
+	public GetKrakenRateTask(ResultReceiver receiver) {
 		this.receiver = receiver;
 	}
 
 	@Override
 	protected Float doInBackground(Void... bla) {
-		String url = "http://data.mtgox.com/api/2/BTCUSD/money/ticker_fast";
+		String url = "https://api.kraken.com/0/public/Ticker?pair=XBTEUR";
+		// {"error":[],
+		// "result":{"XXBTZEUR":{"a":["385.45670","1"],"b":["385.22000","4"],
+		// "c":["385.22000","0.10161325"],"v":["199.10108517","1440.81752671"],"p":["389.88880","395.96287"],"t":[304,2734],"l":["385.00000","385.00000"],"h":["395.69400","403.84700"],"o":"394.89000"}}}
 		Float retVal = -2f;
 		JsonReader reader = null;
 		try {
@@ -34,19 +37,33 @@ class GetMtGoxRateTask extends AsyncTask<Void, Void, Float> {
 			if (statusCode == HttpStatus.SC_OK) {
 				InputStream inputStream = response.getEntity().getContent();
 				reader = new JsonReader(new InputStreamReader(inputStream, "UTF-8"));
-				Log.d(Constants.TAG, "SampleControlSmartWatch2.java::doInBackground " + reader.toString());
 				reader.beginObject();
+				Log.d(Constants.TAG, "GetKrakenRateTask.java::doInBackground " + reader.toString());
 				while (reader.hasNext()) {
 					String name = reader.nextName();
+					Log.d(Constants.TAG, "GetKrakenRateTask.java::doInBackground " + name);
 					if ("result".equals(name)) {
-						String result = reader.nextString();
-						if (!"success".equals(result)) {
-							return -1f;
-						}
-					} else if ("data".equals(name) || "last".equals(name)) {
 						reader.beginObject();
-					} else if ("value".equals(name)) {
-						retVal = (float) reader.nextDouble();
+						while (reader.hasNext()) {
+							name = reader.nextName();
+							Log.d(Constants.TAG, "GetKrakenRateTask.java::doInBackground " + name);
+							if ("XXBTZEUR".equals(name)) {
+								reader.beginObject();
+								while (reader.hasNext()) {
+									name = reader.nextName();
+									if ("c".equals(name)) {
+										reader.beginArray();
+										retVal = (float) reader.nextDouble();
+										break;
+									} else {
+										reader.skipValue();
+									}
+								}
+								break;
+							} else {
+								reader.skipValue();
+							}
+						}
 						break;
 					} else {
 						reader.skipValue();
@@ -63,6 +80,6 @@ class GetMtGoxRateTask extends AsyncTask<Void, Void, Float> {
 
 	@Override
 	protected void onPostExecute(Float result) {
-		receiver.setResult(R.id.mtgox_text, result);
+		receiver.setResult(R.id.kraken_text, result);
 	}
 }

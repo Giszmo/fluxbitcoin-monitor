@@ -19,8 +19,8 @@
         android:textColor="@color/smart_watch_text_color_orange"
         android:textSize="@dimen/smart_watch_text_size_big" />
     <TextView
-        android:text="@string/mtgox"
-        android:id="@+id/mtgox_text"
+        android:text="@string/kraken"
+        android:id="@+id/kraken_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"

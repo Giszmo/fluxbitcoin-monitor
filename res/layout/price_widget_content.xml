@@ -23,7 +23,7 @@
             android:id="@+id/widget_mtgox"
             style="@style/widgetTextStyle"
             android:layout_gravity="left"
-            android:text="@string/mtgox" />
+            android:text="@string/kraken" />
     </LinearLayout>
 
     <ImageView

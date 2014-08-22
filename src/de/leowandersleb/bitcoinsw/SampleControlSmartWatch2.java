@@ -89,7 +89,7 @@ class SampleControlSmartWatch2 extends ControlExtension implements ResultReceive
 	@Override
 	public void onDestroy() {
 		Log.d(Constants.TAG, "SampleControlSmartWatch onDestroy");
-	};
+	}
 
 	@Override
 	public void onStart() {
@@ -111,6 +111,7 @@ class SampleControlSmartWatch2 extends ControlExtension implements ResultReceive
 	@Override
 	public void onPause() {
 		Log.d(Constants.TAG, "SampleControlSmartWatch2.java::onPause ");
+		// TODO: Feb 26, 2014 Leo: write the stats
 	}
 
 	@Override
@@ -128,8 +129,8 @@ class SampleControlSmartWatch2 extends ControlExtension implements ResultReceive
 		case R.id.bitstamp_text:
 			text = context.getString(R.string.bitstamp_price, result);
 			break;
-		case R.id.mtgox_text:
-			text = context.getString(R.string.mtgox_price, result);
+		case R.id.kraken_text:
+			text = context.getString(R.string.kraken_price, result);
 			break;
 		case R.id.huobi_text:
 			text = context.getString(R.string.huobi_price, result);

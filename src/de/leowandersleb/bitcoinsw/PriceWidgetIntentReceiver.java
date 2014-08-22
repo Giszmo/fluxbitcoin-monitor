@@ -40,7 +40,7 @@ public class PriceWidgetIntentReceiver extends BroadcastReceiver implements Resu
 			widgetId = R.id.widget_bitstamp;
 			text = context.getString(R.string.dollar_price_short, result);
 			break;
-		case R.id.mtgox_text:
+		case R.id.kraken_text:
 			widgetId = R.id.widget_mtgox;
 			text = context.getString(R.string.dollar_price_short, result);
 			break;
@@ -62,7 +62,7 @@ public class PriceWidgetIntentReceiver extends BroadcastReceiver implements Resu
 	public static void updatePriceWidgets(Context context) {
 		views = new RemoteViews(context.getPackageName(), R.layout.price_widget_content);
 		views.setTextViewText(R.id.widget_bitstamp, context.getText(R.string.bitstamp));
-		views.setTextViewText(R.id.widget_mtgox, context.getText(R.string.mtgox));
+		views.setTextViewText(R.id.widget_mtgox, context.getText(R.string.kraken));
 		views.setTextViewText(R.id.widget_huobi, context.getText(R.string.huobi));
 		views.setTextViewText(R.id.widget_btcchina, context.getText(R.string.btc_china));
 

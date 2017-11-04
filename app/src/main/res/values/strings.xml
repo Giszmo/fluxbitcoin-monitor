@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">FluxBitcoin Widget</string>
+    <string name="preference_activity_title">FluxBitcoin settings</string>
+    <string name="preference_option_read_me">READ ME</string>
+    <string name="preference_option_read_me_txt">FluxBitcoin shows latest exchange rates from various exchanges</string>
+
+    <string name="bitstamp">Bitstamp …</string>
+    <string name="kraken">Kraken …</string>
+    <string name="bitfinex">Bitfinex …</string>
+    <string name="bittrex">BITTREX …</string>
+
+    <string name="dollar_price_short">$%.0f</string>
+    <string name="euro_price_short">%.0f€</string>
+    <string name="yuan_price_short">%.0f¥</string>
+
+    <string name="description">FluxBitcoin Monitor comes with a widget. The app was originally created by &lt;a href="mailto:leo-bm@wandersleb.de"&gt;Leo Wandersleb&lt;/a&gt;. It is &lt;a href="https://github.com/Giszmo/fluxbitcoin-monitor"&gt;open source&lt;/a&gt;, so if you want to fix or change something, feel free to fork it and make pull requests.</string>
+    <string name="bitcoin">Bitcoin</string>
+    <string name="fluxbitcoin_widget">FluxBitcoin Widget</string>
+</resources>

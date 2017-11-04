@@ -1,0 +1,38 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion "27.0.0"
+
+    defaultConfig {
+        applicationId "de.leowandersleb.bitcoinsw"
+        minSdkVersion 14
+        targetSdkVersion 27
+        versionCode 107
+        versionName "1.107"
+    }
+    signingConfigs {
+        release {
+            keyAlias = ''
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+    useLibrary  'org.apache.http.legacy' //TODO: more retrofit2 to remove this line
+}
+
+if (project.hasProperty('keyStore') &&
+        project.hasProperty('keyAlias') &&
+        project.hasProperty('keyStorePassword') &&
+        project.hasProperty('keyAliasPassword')) {
+    android.signingConfigs.release.storeFile = file('../../' + keyStore)
+    android.signingConfigs.release.keyAlias = keyAlias
+    android.signingConfigs.release.storePassword = keyStorePassword
+    android.signingConfigs.release.keyPassword = keyAliasPassword
+}

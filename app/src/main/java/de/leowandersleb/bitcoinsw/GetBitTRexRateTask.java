@@ -14,18 +14,18 @@ import android.os.AsyncTask;
 import android.util.JsonReader;
 import android.util.Log;
 
-class GetBTCChinaRateTask extends AsyncTask<Void, Void, Float> {
+class GetBitTRexRateTask extends AsyncTask<Void, Void, Float> {
 	private ResultReceiver receiver;
 
-	public GetBTCChinaRateTask(ResultReceiver receiver) {
+	public GetBitTRexRateTask(ResultReceiver receiver) {
 		this.receiver = receiver;
 	}
 
 	@Override
 	protected Float doInBackground(Void... bla) {
-		String url = "https://data.btcchina.com/data/ticker";
+		String url = "https://bittrex.com/api/v1.1/public/getticker?market=USDT-BTC";
 		Float retVal = -2f;
-		JsonReader reader = null;
+		JsonReader reader;
 		try {
 			HttpClient hc = new DefaultHttpClient();
 			HttpGet get = new HttpGet(url);
@@ -34,13 +34,13 @@ class GetBTCChinaRateTask extends AsyncTask<Void, Void, Float> {
 			if (statusCode == HttpStatus.SC_OK) {
 				InputStream inputStream = response.getEntity().getContent();
 				reader = new JsonReader(new InputStreamReader(inputStream, "UTF-8"));
-				Log.d(Constants.TAG, "SampleControlSmartWatch2.java::doInBackground " + reader.toString());
+				Log.d(Constants.TAG, "doInBackground " + reader.toString());
 				reader.beginObject();
 				while (reader.hasNext()) {
 					String name = reader.nextName();
-					if ("ticker".equals(name)) {
+					if ("result".equals(name)) {
 						reader.beginObject();
-					} else if ("last".equals(name)) {
+					} else if ("Last".equals(name)) {
 						retVal = (float) reader.nextDouble();
 						break;
 					} else {
@@ -50,7 +50,7 @@ class GetBTCChinaRateTask extends AsyncTask<Void, Void, Float> {
 				reader.close();
 				inputStream.close();
 			}
-		} catch (IOException e) {
+		} catch (IOException | IllegalStateException e) {
 			Log.e(Constants.TAG, "SampleControlSmartWatch2.java::doInBackground ");
 		}
 		return retVal;
@@ -58,6 +58,6 @@ class GetBTCChinaRateTask extends AsyncTask<Void, Void, Float> {
 
 	@Override
 	protected void onPostExecute(Float result) {
-		receiver.setResult(R.id.btcchina_text, result);
+		receiver.setResult(R.id.widget_bittrex, result);
 	}
 }

@@ -16,18 +16,8 @@ public class Main extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		TextView description = (TextView) findViewById(R.id.description);
+		TextView description = findViewById(R.id.description);
 		description.setText(Html.fromHtml((String) getText(R.string.description)));
 		description.setMovementMethod(LinkMovementMethod.getInstance());
-		EditText bitcoinaddress = (EditText) findViewById(R.id.editTextDonationaddress);
-		bitcoinaddress.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-				ClipData clip = ClipData.newPlainText("Bitcoins for Leo Wandersleb", Main.this.getText(R.string.bitcoindonationaddress));
-				clipboard.setPrimaryClip(clip);
-				Toast.makeText(Main.this, "Address copied to clipboard", Toast.LENGTH_LONG).show();
-			}
-		});
 	}
 }

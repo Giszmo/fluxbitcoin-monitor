@@ -8,7 +8,7 @@ public class Tools {
 		ExecutorService threadPool = Executors.newFixedThreadPool(4);
 		new GetKrakenRateTask(receiver).executeOnExecutor(threadPool);
 		new GetBitstampRateTask(receiver).executeOnExecutor(threadPool);
-		new GetBTCChinaRateTask(receiver).executeOnExecutor(threadPool);
-		new GetHuobiRateTask(receiver).executeOnExecutor(threadPool);
+		new GetBitTRexRateTask(receiver).executeOnExecutor(threadPool);
+		new GetBitfinexRateTask(receiver).executeOnExecutor(threadPool);
 	}
 }

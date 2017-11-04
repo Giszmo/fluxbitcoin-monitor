@@ -26,45 +26,40 @@ public class PriceWidgetIntentReceiver extends BroadcastReceiver implements Resu
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		PriceWidgetIntentReceiver.context = context;
-		if (intent.getAction().equals("de.leowandersleb.bitcoinsw.REFRESH")) {
+		if ("de.leowandersleb.bitcoinsw.REFRESH".equals(intent.getAction())) {
 			updatePriceWidgets(context);
 		}
 	}
 
 	@Override
 	public void setResult(int resId, float result) {
-		int widgetId = 0;
 		String text = "";
 		switch (resId) {
-		case R.id.bitstamp_text:
-			widgetId = R.id.widget_bitstamp;
+		case R.id.widget_bitstamp:
 			text = context.getString(R.string.dollar_price_short, result);
 			break;
-		case R.id.kraken_text:
-			widgetId = R.id.widget_mtgox;
+		case R.id.widget_kraken:
+			text = context.getString(R.string.euro_price_short, result);
+			break;
+		case R.id.widget_bitfinex:
 			text = context.getString(R.string.dollar_price_short, result);
 			break;
-		case R.id.huobi_text:
-			widgetId = R.id.widget_huobi;
-			text = context.getString(R.string.yuan_price_short, result);
-			break;
-		case R.id.btcchina_text:
-			widgetId = R.id.widget_btcchina;
-			text = context.getString(R.string.yuan_price_short, result);
+		case R.id.widget_bittrex:
+			text = context.getString(R.string.dollar_price_short, result);
 			break;
 		default:
 			throw new InvalidParameterException(resId + " is not a valid resId");
 		}
-		views.setTextViewText(widgetId, text);
+		views.setTextViewText(resId, text);
 		manager.updateAppWidget(new ComponentName(context, PriceWidgetProvider.class), views);
 	}
 
 	public static void updatePriceWidgets(Context context) {
 		views = new RemoteViews(context.getPackageName(), R.layout.price_widget_content);
 		views.setTextViewText(R.id.widget_bitstamp, context.getText(R.string.bitstamp));
-		views.setTextViewText(R.id.widget_mtgox, context.getText(R.string.kraken));
-		views.setTextViewText(R.id.widget_huobi, context.getText(R.string.huobi));
-		views.setTextViewText(R.id.widget_btcchina, context.getText(R.string.btc_china));
+		views.setTextViewText(R.id.widget_kraken, context.getText(R.string.kraken));
+		views.setTextViewText(R.id.widget_bitfinex, context.getText(R.string.bitfinex));
+		views.setTextViewText(R.id.widget_bittrex, context.getText(R.string.bittrex));
 
 		// TODO: Jan 29, 2014 Leo: clicking the widget should initialize a refresh
 		// Intent intent = new Intent();

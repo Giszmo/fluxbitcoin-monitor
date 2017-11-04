@@ -12,20 +12,19 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.os.AsyncTask;
 import android.util.JsonReader;
-import android.util.Log;
 
-class GetHuobiRateTask extends AsyncTask<Void, Void, Float> {
+class GetBitfinexRateTask extends AsyncTask<Void, Void, Float> {
 	private ResultReceiver receiver;
 
-	public GetHuobiRateTask(ResultReceiver receiver) {
+	GetBitfinexRateTask(ResultReceiver receiver) {
 		this.receiver = receiver;
 	}
 
 	@Override
 	protected Float doInBackground(Void... bla) {
-		String url = "https://detail.huobi.com/staticmarket/detail.html";
+		String url = "https://api.bitfinex.com/v1/pubticker/btcusd";
 		Float retVal = -2f;
-		JsonReader reader = null;
+		JsonReader reader;
 		try {
 			HttpClient hc = new DefaultHttpClient();
 			HttpGet get = new HttpGet(url);
@@ -33,13 +32,12 @@ class GetHuobiRateTask extends AsyncTask<Void, Void, Float> {
 			int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode == HttpStatus.SC_OK) {
 				InputStream inputStream = response.getEntity().getContent();
-				inputStream.skip(12);
 				reader = new JsonReader(new InputStreamReader(inputStream, "UTF-8"));
 				reader.setLenient(true);
 				reader.beginObject();
 				while (reader.hasNext()) {
 					String name = reader.nextName();
-					if ("p_new".equals(name)) {
+					if ("last_price".equals(name)) {
 						retVal = (float) reader.nextDouble();
 						break;
 					} else {
@@ -49,14 +47,13 @@ class GetHuobiRateTask extends AsyncTask<Void, Void, Float> {
 				reader.close();
 				inputStream.close();
 			}
-		} catch (IOException e) {
-			Log.e(Constants.TAG, "SampleControlSmartWatch2.java::doInBackground ");
+		} catch (IOException ignore) {
 		}
 		return retVal;
 	}
 
 	@Override
 	protected void onPostExecute(Float result) {
-		receiver.setResult(R.id.huobi_text, result);
+		receiver.setResult(R.id.widget_bitfinex, result);
 	}
 }

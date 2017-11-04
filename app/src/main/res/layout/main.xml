@@ -13,16 +13,5 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="@string/description" />
-        <EditText
-            android:id="@+id/editTextDonationaddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:inputType="none"
-            android:editable="false"
-            android:ems="10"
-            android:text="@string/bitcoindonationaddress"
-            android:textSize="12sp" >
-        </EditText>
     </LinearLayout>
 </ScrollView>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="de.leowandersleb.bitcoinsw">
+
+	<uses-permission android:name="android.permission.INTERNET" />
+    
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name"
+        android:theme="@style/ExtensionLightTheme" >
+        <activity
+            android:label="@string/app_name"
+            android:name=".Main">
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SamplePreferenceActivity"
+            android:label="@string/preference_activity_title" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+		<receiver android:name=".PriceWidgetProvider"
+		    android:label="@string/fluxbitcoin_widget"
+		    android:exported="false">
+		    <intent-filter>
+		        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+		    </intent-filter>
+		    <meta-data android:name="android.appwidget.provider"
+		               android:resource="@xml/price_widget" />
+		</receiver>
+		<receiver
+		    android:name=".PriceWidgetIntentReceiver"
+		    android:label="widgetBroadcastReceiver"
+		    android:exported="false" >
+		    <intent-filter>
+		        <action android:name="de.leowandersleb.bitcoinsw.REFRESH" />
+		    </intent-filter>
+
+		    <meta-data
+		        android:name="android.appwidget.provider"
+		        android:resource="@xml/price_widget_provider" />
+		</receiver>
+    </application>
+</manifest>
